@@ -1,10 +1,12 @@
-
+from torch.utils.tensorboard import SummaryWriter
 
 from args import *
 from model_head import *
 from dataloader import *
 from loss_metric import *
 
+
+writer = SummaryWriter()
 
 model = UNetDesigner(d1=PARAMETERS['d1'], 
                      d2=PARAMETERS['d2'], 
@@ -19,14 +21,15 @@ model = model.to(device)
 
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-
 '''
 Train
 '''
+n_iter = 0
 val_loss = []
-for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
+for epoch in range(20):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
+        n_iter +=1
         if phase == 'train':
             loss_list = []
             model.train()
@@ -38,6 +41,10 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 output = model(input)
                 loss = l2_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
+                
+                writer.add_scalar('Loss/train', loss.item(), n_iter)
+                writer.add_scalar('metric/train', metric.item(), n_iter)
+                
                 loss_list.append(metric.item())
                 loss.backward()
                 optimizer.step()
@@ -55,8 +62,14 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 output = model(input)
                 loss = l2_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
+                
+                writer.add_scalar('Loss/valid', loss.item(), n_iter)
+                writer.add_scalar('metric/valid', metric.item(), n_iter)
+                
                 loss_list.append(metric.item())
             mean_loss = sum(loss_list) / len(loss_list)
             print("val l2_norm: ", mean_loss)
             val_loss.append(mean_loss)
 print('Maximum Valid metric: ', max(val_loss))
+writer.close()
+# !tensorboard --logdir=runs
