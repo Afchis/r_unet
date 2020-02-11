@@ -23,6 +23,7 @@ model = UNetDesigner(d1=PARAMETERS['d1'],
                      )
 model = model.to(device)
 
+model.load_state_dict(torch.load('weights/weights.pth'))
 '''
 Test
 '''
