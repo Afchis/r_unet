@@ -24,12 +24,10 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 '''
 Train
 '''
-n_iter = 0
 val_loss = []
-for epoch in range(1):# NUM_EPOCHS = 125
+for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
-        n_iter +=1
         if phase == 'train':
             loss_list = []
             metric_list = []
