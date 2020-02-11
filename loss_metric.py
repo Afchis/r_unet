@@ -27,9 +27,9 @@ def dice_loss(x, y, d):
     dice_loss = 1 - (2*intersection / (x_sum + y_sum))
     return dice_loss.mean()
 
-def combo_loss(x, y, d, bce_weight=0.5):
-    combo_loss = bce_weight * bce_loss(x, y, d) + (1 - bce_weight) * dice_loss(x, y, d)
-    return combo_loss
+def dice_combo_loss(x, y, d, bce_weight=0.6):
+    dice_combo_loss = bce_weight * bce_loss(x, y, d) + (1 - bce_weight) * dice_loss(x, y, d)
+    return dice_combo_loss
 
 def l2_combo_loss(x, y, d):
     l2_combo_loss = l2_loss(x, y, d) * bce_loss(x, y, d)
