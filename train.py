@@ -26,7 +26,7 @@ Train
 '''
 n_iter = 0
 val_loss = []
-for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
+for epoch in range(1):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
         n_iter +=1
@@ -81,3 +81,5 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
 print('Maximum Valid metric: ', max(val_loss))
 writer.close()
 # !tensorboard --logdir=runs
+
+torch.save(model.state_dict(), 'weights/weights.pth')
