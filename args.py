@@ -10,19 +10,20 @@ cell_model = {
     'Gru' : ConvGruCell(in_channels, out_channels), 
     'Rrn' : ConvRrnCell(in_channels, out_channels), 
     'Sru' : ConvSruCell(in_channels, out_channels), 
-    'Dru' : ConvDruCell(in_channels, out_channels)
+    'Dru' : ConvDruCell(in_channels, out_channels),
+    'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
 RECURRENT = True
 PARAMETERS = {
     'd1':False, 
     'd2':False, 
-    'd3':False, 
-    'b_':True, 
+    'd3':True, 
+    'b_':False, 
     'u1':False, 
     'u2':False, 
     'u3':False, 
-    'cell_model':'Sru'
+    'cell_model':'Lstm'
 }
 
 # arguments

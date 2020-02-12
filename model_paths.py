@@ -16,7 +16,8 @@ class ConvRnn(nn.Module):
             'Gru' : ConvGruCell(in_channels, out_channels), 
             'Rrn' : ConvRrnCell(in_channels, out_channels), 
             'Sru' : ConvSruCell(in_channels, out_channels), 
-            'Dru' : ConvDruCell(in_channels, out_channels)
+            'Dru' : ConvDruCell(in_channels, out_channels),
+            'Lstm': ConvLstmCell(in_channels, out_channels)
         }
         self.rec = reccurent
         self.cell_model = cell_model
@@ -28,7 +29,11 @@ class ConvRnn(nn.Module):
         self.hidden_size = (self.batch_size, self.out_channels, self.input_size, self.input_size)
         
         self.ConvRnn_layer = self.cell_dict[self.cell_model]
-        self.init_hidden = torch.zeros(self.hidden_size).to(device)
+        if self.cell_model == 'Lstm':
+            self.init_hidden = torch.zeros(self.hidden_size).to(device)
+            self.init_hidden = self.init_hidden, self.init_hidden
+        else:
+            self.init_hidden = torch.zeros(self.hidden_size).to(device)
 
 
     def forward(self, x):

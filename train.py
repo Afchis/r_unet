@@ -25,7 +25,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 Train
 '''
 val_loss = []
-for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
+for epoch in range(5):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
         if phase == 'train':
@@ -40,9 +40,6 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 output = model(input)
                 loss = dice_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
-                
-                #writer.add_scalar('Loss/train', loss.item(), n_iter)
-                #writer.add_scalar('metric/train', metric.item(), n_iter)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
                 loss.backward()
@@ -65,9 +62,6 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 output = model(input)
                 loss = dice_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
-                
-                #writer.add_scalar('Loss/valid', loss.item(), n_iter)
-                #writer.add_scalar('metric/valid', metric.item(), n_iter)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
             mean_loss = sum(loss_list) / len(loss_list)
@@ -80,4 +74,4 @@ print('Maximum Valid metric: ', max(val_loss))
 writer.close()
 # !tensorboard --logdir=runs
 
-torch.save(model.state_dict(), 'weights/weights.pth')
+#torch.save(model.state_dict(), 'weights/weights.pth')

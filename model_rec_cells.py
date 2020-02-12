@@ -132,3 +132,28 @@ class ConvDruCell(nn.Module):
         h = (1 - z) * h_
         out = h + h_prev
         return out, out
+
+
+class ConvLstmCell(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(ConvLstmCell, self).__init__()
+        self.conv = nn.Sequential(nn.Conv2d(in_channels+out_channels, 4*out_channels, kernel_size=3, padding=1))
+        self.hidden_dim = out_channels
+
+    def forward(self, x, hidden):
+        h_h, c_h = hidden
+        
+        combined = torch.cat([x, h_h], dim=1)
+        
+        combined_conv = self.conv(combined)
+        cc_i, cc_f, cc_o, cc_g = torch.split(combined_conv, self.hidden_dim, dim=1) 
+        i = torch.sigmoid(cc_i)
+        f = torch.sigmoid(cc_f)
+        o = torch.sigmoid(cc_o)
+        g = torch.tanh(cc_g)
+
+        c_next = f * c_h + i * g
+        h_next = o * torch.tanh(c_next)
+        hidden_next = h_next, c_next
+        
+        return h_next, hidden_next
