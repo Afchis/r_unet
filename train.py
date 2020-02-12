@@ -14,8 +14,7 @@ model = UNetDesigner(d1=PARAMETERS['d1'],
                      b_=PARAMETERS['b_'],
                      u1=PARAMETERS['u1'],
                      u2=PARAMETERS['u2'],
-                     u3=PARAMETERS['u3'],
-                     cell_model=PARAMETERS['cell_model']
+                     u3=PARAMETERS['u3']
                      )
 model = model.to(device)
 
@@ -25,7 +24,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 Train
 '''
 val_loss = []
-for epoch in range(5):# NUM_EPOCHS = 125
+for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
         if phase == 'train':

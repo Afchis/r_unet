@@ -16,14 +16,13 @@ cell_model = {
 """
 RECURRENT = True
 PARAMETERS = {
-    'd1':False, 
-    'd2':False, 
-    'd3':True, 
-    'b_':False, 
-    'u1':False, 
-    'u2':False, 
-    'u3':False, 
-    'cell_model':'Lstm'
+    'd1':'Rnn', 
+    'd2':'Rnn', 
+    'd3':'Rnn', 
+    'b_':'Lstm', 
+    'u1':'Rnn', 
+    'u2':'Rnn', 
+    'u3':'Rnn'
 }
 
 # arguments
