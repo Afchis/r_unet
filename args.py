@@ -14,13 +14,13 @@ cell_model = {
     'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
-GRAPH_NAME ='Bottom_Rru'
+GRAPH_NAME ='bottom_Gru'
 RECURRENT = True
 PARAMETERS = {
     'd1' : 'False', 
     'd2' : 'False', 
     'd3' : 'False', 
-    'b_' : 'Rrn', 
+    'b_' : 'Gru', 
     'u1' : 'False', 
     'u2' : 'False', 
     'u3' : 'False'
@@ -29,7 +29,7 @@ PARAMETERS = {
 # arguments
 TIMESTEPS = 3
 BATCH_SIZE = 1
-NUM_EPOCHS = 200
+NUM_EPOCHS = 500
 INPUT_SIZE = 128
 INPUT_CHANNELS = 1
 NUM_CLASSES = 2
