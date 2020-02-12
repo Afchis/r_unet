@@ -1,3 +1,4 @@
+import torch
 from torch.utils.tensorboard import SummaryWriter
 
 from args import *
@@ -23,7 +24,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 '''
 Train
 '''
-val_loss = []
+val_metric = []
 for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
@@ -44,11 +45,9 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
-            mean_loss = sum(loss_list) / len(loss_list)
-            mean_metric = sum(metric_list) / len(metric_list)
-            writer.add_scalar('loss/train', mean_loss, epoch)
-            writer.add_scalar('metric/train', mean_metric, epoch)
-            print("train l2_norm: ", mean_metric)
+            train_mean_loss = sum(loss_list) / len(loss_list)
+            train_mean_metric = sum(metric_list) / len(metric_list)
+            print("train l2_norm: ", train_mean_metric)
         elif phase == 'valid':
             loss_list = []
             metric_list = []
@@ -63,13 +62,17 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
-            mean_loss = sum(loss_list) / len(loss_list)
-            mean_metric = sum(metric_list) / len(metric_list)
-            writer.add_scalar('loss/valid', mean_loss, epoch)
-            writer.add_scalar('metric/valid', mean_metric, epoch)
-            print("val l2_norm: ", mean_metric)
-            val_loss.append(mean_metric)
-print('Maximum Valid metric: ', max(val_loss))
+            valid_mean_loss = sum(loss_list) / len(loss_list)
+            valid_mean_metric = sum(metric_list) / len(metric_list)
+            print("val l2_norm: ", valid_mean_metric)
+            val_metric.append(valid_mean_metric)
+    writer.add_scalars('%s_loss' % GRAPH_NAME, {'train' : train_mean_loss, 
+                                                'valid' : valid_mean_loss}, epoch)
+    writer.add_scalars('%s_metric' % GRAPH_NAME, {'train' : train_mean_metric, 
+                                                  'valid' : valid_mean_metric}, epoch)
+
+
+print('Maximum Valid metric: ', max(val_metric))
 writer.close()
 # !tensorboard --logdir=runs
 

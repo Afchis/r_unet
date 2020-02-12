@@ -22,7 +22,7 @@ class UNetDesigner(nn.Module):
         self.input_x8 = int(self.input_size / 8)
 
          ##### Down_1 layer ##### input_size = 128
-        if self.d1 == False:
+        if self.d1 == 'False':
             self.down1 = nn.Sequential(ConvRelu(self.ch_list[0], self.ch_list[1]),
                                        ConvRelu(self.ch_list[1], self.ch_list[1])
                                        )
@@ -35,7 +35,7 @@ class UNetDesigner(nn.Module):
         self.down1_pool = MaxPool()
 
          ##### Down_2 layer ##### input_size = 64
-        if self.d2 == False:
+        if self.d2 == 'False':
             self.down2 = nn.Sequential(ConvRelu(self.ch_list[1], self.ch_list[2]),
                                        ConvRelu(self.ch_list[2], self.ch_list[2])
                                        )
@@ -48,7 +48,7 @@ class UNetDesigner(nn.Module):
         self.down2_pool = MaxPool()
 
          ##### Down_3 layer ##### input_size = 32
-        if self.d3 == False:
+        if self.d3 == 'False':
             self.down3 = nn.Sequential(ConvRelu(self.ch_list[2], self.ch_list[3]),
                                        ConvRelu(self.ch_list[3], self.ch_list[3])
                                        )
@@ -61,7 +61,7 @@ class UNetDesigner(nn.Module):
         self.down3_pool = MaxPool()
 
          ##### Bottom layer ##### input_size = 16
-        if self.b == False:
+        if self.b == 'False':
             self.bottom = nn.Sequential(ConvRelu(self.ch_list[3], self.ch_list[4]),
                                         ConvRelu(self.ch_list[4], self.ch_list[4])
                                         )
@@ -74,7 +74,7 @@ class UNetDesigner(nn.Module):
 
          ##### Up_3 layer #####
         self.up_cat_3 = UpAndCat()
-        if self.u3 == False:
+        if self.u3 == 'False':
             self.up_conv_3 = nn.Sequential(ConvRelu(self.ch_list[4]+self.ch_list[3], 
                                                     self.ch_list[3]),
                                            ConvRelu(self.ch_list[3], self.ch_list[3])
@@ -89,7 +89,7 @@ class UNetDesigner(nn.Module):
 
          ##### Up_2 layer #####
         self.up_cat_2 = UpAndCat()
-        if self.u2 == False:
+        if self.u2 == 'False':
             self.up_conv_2 = nn.Sequential(ConvRelu(self.ch_list[3]+self.ch_list[2], 
                                                     self.ch_list[2]),
                                            ConvRelu(self.ch_list[2], self.ch_list[2])
@@ -104,7 +104,7 @@ class UNetDesigner(nn.Module):
 
          ##### Up_1 layer #####
         self.up_cat_1 = UpAndCat()
-        if self.u1 == False:
+        if self.u1 == 'False':
             self.up_conv_1 = nn.Sequential(ConvRelu(self.ch_list[2]+self.ch_list[1], 
                                                     self.ch_list[1]),
                                            ConvRelu(self.ch_list[1], self.ch_list[1])

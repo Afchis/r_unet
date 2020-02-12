@@ -14,15 +14,16 @@ cell_model = {
     'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
+GRAPH_NAME ='Bottom_Rru'
 RECURRENT = True
 PARAMETERS = {
-    'd1':'Rnn', 
-    'd2':'Rnn', 
-    'd3':'Rnn', 
-    'b_':'Lstm', 
-    'u1':'Rnn', 
-    'u2':'Rnn', 
-    'u3':'Rnn'
+    'd1' : 'False', 
+    'd2' : 'False', 
+    'd3' : 'False', 
+    'b_' : 'Rrn', 
+    'u1' : 'False', 
+    'u2' : 'False', 
+    'u3' : 'False'
 }
 
 # arguments
