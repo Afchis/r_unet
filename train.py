@@ -73,6 +73,7 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
 
 
 print('Maximum Valid metric: ', max(val_metric))
+print('Rensorboard name: ', GRAPH_NAME)
 writer.close()
 # !tensorboard --logdir=runs
 
