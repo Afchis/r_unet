@@ -147,12 +147,12 @@ test_dataset = TestMedData()
 
 train_loader = DataLoader(dataset=train_dataset,
                           batch_size=BATCH_SIZE,
-                          num_workers=4,
+                          num_workers=2,
                           shuffle=True)
 
 valid_loader = DataLoader(dataset=valid_dataset,
                           batch_size=BATCH_SIZE,
-                          num_workers=4,
+                          num_workers=2,
                           shuffle=True)
 
 test_loader = DataLoader(dataset=test_dataset,

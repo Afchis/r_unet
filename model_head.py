@@ -9,7 +9,7 @@ from model_paths import *
 Model head
 '''
 class UNetDesigner(nn.Module):    
-    def __init__(self, d1, d2, d3, b_, u1, u2, u3,
+    def __init__(self, d1, d2, d3, b_, u3, u2, u1,
                  input_size=INPUT_SIZE, input_channels=INPUT_CHANNELS, num_classes=NUM_CLASSES):
         super(UNetDesigner, self).__init__()
         self.num_classes = NUM_CLASSES

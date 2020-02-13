@@ -13,9 +13,9 @@ model = UNetDesigner(d1=PARAMETERS['d1'],
                      d2=PARAMETERS['d2'],
                      d3=PARAMETERS['d3'],
                      b_=PARAMETERS['b_'],
-                     u1=PARAMETERS['u1'],
+                     u3=PARAMETERS['u3'],
                      u2=PARAMETERS['u2'],
-                     u3=PARAMETERS['u3']
+                     u1=PARAMETERS['u1']
                      )
 model = model.to(device)
 
@@ -25,6 +25,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 Train
 '''
 val_metric = []
+print('-'*30)
+print('Tensorboard name: ', GRAPH_NAME)
 for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
@@ -73,7 +75,7 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
 
 
 print('Maximum Valid metric: ', max(val_metric))
-print('Rensorboard name: ', GRAPH_NAME)
+print('Tensorboard name: ', GRAPH_NAME)
 writer.close()
 # !tensorboard --logdir=runs
 
