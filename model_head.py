@@ -123,7 +123,7 @@ class UNetDesigner(nn.Module):
                                    )                                                    # 32-->NUM_CLASSES
 
     def forward(self, x):
-        x = x.reshape(-1, self.input_chennels, self.input_size, self.input_size)
+        x = x.reshape(-1, self.input_chennels, self.input_size, self.input_size) 
         # print(x.shape)
         down1_feat = self.down1(x)
         pool1 = self.down1_pool(down1_feat)

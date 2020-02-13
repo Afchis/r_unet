@@ -9,7 +9,7 @@ from model_rec_cells import *
 Model paths
 '''
 class ConvRnn(nn.Module):
-    def __init__(self, in_channels, out_channels, ConvRnn_input_size, cell_model, reccurent=RECURRENT): # arg for ConvRnn layer
+    def __init__(self, in_channels, out_channels, ConvRnn_input_size, cell_model, batch_size=BATCH_SIZE, reccurent=RECURRENT): # arg for ConvRnn layer
         super(ConvRnn, self).__init__()
         self.cell_dict = {
             'Rnn' : ConvRnnCell(in_channels, out_channels), 
@@ -21,7 +21,7 @@ class ConvRnn(nn.Module):
         }
         self.rec = reccurent
         self.cell_model = cell_model
-        self.batch_size = BATCH_SIZE
+        self.batch_size = batch_size
         self.timesteps = TIMESTEPS
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -37,6 +37,16 @@ class ConvRnn(nn.Module):
 
 
     def forward(self, x):
+        if self.batch_size != int(x.shape[0] / self.timesteps):
+            self.batch_size = int(x.shape[0] / self.timesteps)
+
+            self.hidden_size = (self.batch_size, self.out_channels, self.input_size, self.input_size)
+            if self.cell_model == 'Lstm':
+                self.init_hidden = torch.zeros(self.hidden_size).to(device)
+                self.init_hidden = self.init_hidden, self.init_hidden
+            else:
+                self.init_hidden = torch.zeros(self.hidden_size).to(device)
+
         x_cells = None
         x_list = []
 

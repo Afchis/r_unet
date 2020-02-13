@@ -14,13 +14,13 @@ cell_model = {
     'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
-GRAPH_NAME ='Rnn_4x'
+GRAPH_NAME ='Rrn_bottle'
 RECURRENT = True
 PARAMETERS = {
-    'd1' : 'Rnn', 
-    'd2' : 'Rnn', 
-    'd3' : 'Rnn', 
-    'b_' : 'Rnn', 
+    'd1' : 'False', 
+    'd2' : 'False', 
+    'd3' : 'False', 
+    'b_' : 'Rrn', 
     'u1' : 'False', 
     'u2' : 'False', 
     'u3' : 'False'
@@ -28,8 +28,8 @@ PARAMETERS = {
 
 # arguments
 TIMESTEPS = 3
-BATCH_SIZE = 32
-NUM_EPOCHS = 50
+BATCH_SIZE = 16
+NUM_EPOCHS = 20
 INPUT_SIZE = 128
 INPUT_CHANNELS = 3
 NUM_CLASSES = 2
