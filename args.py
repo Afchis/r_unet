@@ -14,13 +14,13 @@ cell_model = {
     'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
-GRAPH_NAME ='bottom_Gru'
+GRAPH_NAME ='Rnn_4x'
 RECURRENT = True
 PARAMETERS = {
-    'd1' : 'False', 
-    'd2' : 'False', 
-    'd3' : 'False', 
-    'b_' : 'Gru', 
+    'd1' : 'Rnn', 
+    'd2' : 'Rnn', 
+    'd3' : 'Rnn', 
+    'b_' : 'Rnn', 
     'u1' : 'False', 
     'u2' : 'False', 
     'u3' : 'False'
@@ -28,14 +28,14 @@ PARAMETERS = {
 
 # arguments
 TIMESTEPS = 3
-BATCH_SIZE = 1
-NUM_EPOCHS = 500
+BATCH_SIZE = 32
+NUM_EPOCHS = 50
 INPUT_SIZE = 128
-INPUT_CHANNELS = 1
+INPUT_CHANNELS = 3
 NUM_CLASSES = 2
 LEARNING_RATE = 0.001
 
 # decive
-DEVICE = "cuda:1"
+DEVICE = "cuda:0"
 device = torch.device(DEVICE if torch.cuda.is_available() else "cpu")
 device

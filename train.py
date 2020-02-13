@@ -3,7 +3,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 from args import *
 from model_head import *
-from dataloader import *
+from dataloader_LITS import *
 from loss_metric import *
 
 
@@ -38,7 +38,7 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = dice_combo_loss(output, label, depth)
+                loss = bce_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
@@ -58,7 +58,7 @@ for epoch in range(NUM_EPOCHS):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = dice_combo_loss(output, label, depth)
+                loss = bce_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
