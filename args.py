@@ -14,7 +14,7 @@ cell_model = {
     'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
-GRAPH_NAME ='Lstm_bottle'
+GRAPH_NAME ='Lstm'
 RECURRENT = True
 PARAMETERS = {
     'd1' : 'False', 
@@ -29,11 +29,11 @@ PARAMETERS = {
 # arguments
 TIMESTEPS = 3
 BATCH_SIZE = 16
-NUM_EPOCHS = 100
+NUM_EPOCHS = 15
 INPUT_SIZE = 128
 INPUT_CHANNELS = 3
-NUM_CLASSES = 2
-LEARNING_RATE = 0.001
+NUM_CLASSES = 22
+LEARNING_RATE = 0.0005
 
 # decive
 DEVICE = "cuda:0"

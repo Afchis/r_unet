@@ -1,6 +1,6 @@
 from args import *
 from model_head import *
-from dataloader import *
+from dataloader_VOC import *
 
 import torch
 import torch.nn as nn
@@ -18,8 +18,7 @@ model = UNetDesigner(d1=PARAMETERS['d1'],
                      b_=PARAMETERS['b_'],
                      u1=PARAMETERS['u1'],
                      u2=PARAMETERS['u2'],
-                     u3=PARAMETERS['u3'],
-                     cell_model=PARAMETERS['cell_model']
+                     u3=PARAMETERS['u3']
                      )
 model = model.to(device)
 
@@ -30,15 +29,19 @@ Test
 list_inp = []
 list_out = []
 for i, data in enumerate(test_loader):
-    input = data
-    input = input.to(device)
-    test_output = model(input)
-    list_inp.append(input)
-    list_out.append(test_output)
+    if i < 50:
+        input, _, _ = data
+        input = input.to(device)
+        test_output = model(input)
+        list_inp.append(input)
+        list_out.append(test_output)
+    else:
+        break
 
 def showw(object, i):
     imgs = object[i].cpu()
-    img = torch.sigmoid(imgs[2][1])
+    img = torch.sigmoid(imgs[2][0])
+    img = (img > 0.6).float()
     return to_pil(img)
 
 index = 3 

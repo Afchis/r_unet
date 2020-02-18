@@ -1,3 +1,5 @@
+from args import *
+
 import os
 import numpy as np
 
@@ -8,8 +10,6 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import torchvision
 import torchvision.transforms as transforms
-
-from args import *
 
 
 # way to the data folders
@@ -43,8 +43,8 @@ def get_labels(object):
     depth1 = to_tensor(morph.distance_transform_edt(np.asarray(label1[0])))
     label2 = (label1==0).float()
     depth2 = to_tensor(morph.distance_transform_edt(np.asarray(label2[0])))
+    depths = depth1 + depth2
     labels = torch.stack([label1, label2], dim=1).squeeze()
-    depths = torch.stack([depth1, depth2], dim=1).squeeze()
     return labels, depths
 
 
