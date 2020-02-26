@@ -36,9 +36,9 @@ Dataloader
 '''
 def get_labels(object):
     label1 = (object==0).float()
-    depth1 = to_tensor(morph.distance_transform_edt(np.asarray(label1[0])))
+    depth1 = torch.tensor(morph.distance_transform_edt(np.asarray(label1[0])))
     label2 = (label1==0).float()
-    depth2 = to_tensor(morph.distance_transform_edt(np.asarray(label2[0])))
+    depth2 = torch.tensor(morph.distance_transform_edt(np.asarray(label2[0])))
     depths = depth1 + depth2
     labels = torch.stack([label1, label2], dim=1).squeeze()
     return labels, depths
@@ -151,3 +151,6 @@ dataset_sizes = {
     'valid': len(valid_dataset),
     'test': len(test_dataset)
 }
+if __name__ == '__main__':
+    data = train_dataset[0]
+    print(data)

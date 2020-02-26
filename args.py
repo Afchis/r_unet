@@ -14,26 +14,28 @@ cell_model = {
     'Lstm': ConvLstmCell(in_channels, out_channels)
 }
 """
-GRAPH_NAME ='Lstm'
+GRAPH_NAME ='False'
 RECURRENT = True
 PARAMETERS = {
     'd1' : 'False', 
     'd2' : 'False', 
     'd3' : 'False', 
-    'b_' : 'Lstm', 
+    'd4' : 'False',
+    'b_' : 'False', 
     'u1' : 'False', 
     'u2' : 'False', 
-    'u3' : 'False'
+    'u3' : 'False',
+    'u4' : 'False',
 }
 
 # arguments
-TIMESTEPS = 3
+TIMESTEPS = 1
 BATCH_SIZE = 16
 NUM_EPOCHS = 15
-INPUT_SIZE = 128
+INPUT_SIZE = 256
 INPUT_CHANNELS = 3
-NUM_CLASSES = 22
-LEARNING_RATE = 0.0005
+NUM_CLASSES = 2
+LEARNING_RATE = 0.005
 
 # decive
 DEVICE = "cuda:0"

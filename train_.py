@@ -2,14 +2,25 @@ import torch
 
 from args import *
 from model_head import *
-from dataloader_VOC import *
+from dataloader_COCO2014_person import *
 from loss_metric import *
+
+
+if __name__ == '__main__':
+    print('TIMESTEPS: ', TIMESTEPS)
+    print('BATCH_SIZE: ', BATCH_SIZE)
+    print('INPUT_SIZE: ', INPUT_SIZE)
+    print('INPUT_CHANNELS: ', INPUT_CHANNELS)
+    print('NUM_CLASSES: ', NUM_CLASSES)
+    print('LEARNING_RATE: ', LEARNING_RATE)
 
 
 model = UNetDesigner(d1=PARAMETERS['d1'],
                      d2=PARAMETERS['d2'],
                      d3=PARAMETERS['d3'],
+                     d4=PARAMETERS['d4'],
                      b_=PARAMETERS['b_'],
+                     u4=PARAMETERS['u4'],
                      u3=PARAMETERS['u3'],
                      u2=PARAMETERS['u2'],
                      u1=PARAMETERS['u1']
@@ -38,7 +49,7 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = dice_loss(output, label, depth)
+                loss = l2_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
@@ -46,7 +57,7 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 optimizer.step()
                 optimizer.zero_grad()
 
-                if iter % 1 == 0:
+                if iter % 20 == 0:
                     print('loss_iter', iter, ':', loss.item())
 
             train_mean_loss = sum(loss_list) / len(loss_list)
@@ -62,13 +73,10 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = dice_loss(output, label, depth)
+                loss = l2_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
-
-                if iter % 1 == 0:
-                    print('loss_iter', iter, ':', loss.item())
 
             valid_mean_loss = sum(loss_list) / len(loss_list)
             valid_mean_metric = sum(metric_list) / len(metric_list)
