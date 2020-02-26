@@ -1,7 +1,7 @@
 import torch
 
 from args import *
-from model_head import *
+from model_head_small import *
 from dataloader_COCO2014_person import *
 from loss_metric import *
 
@@ -18,9 +18,9 @@ if __name__ == '__main__':
 model = UNetDesigner(d1=PARAMETERS['d1'],
                      d2=PARAMETERS['d2'],
                      d3=PARAMETERS['d3'],
-                     d4=PARAMETERS['d4'],
+                     # d4=PARAMETERS['d4'],
                      b_=PARAMETERS['b_'],
-                     u4=PARAMETERS['u4'],
+                     # u4=PARAMETERS['u4'],
                      u3=PARAMETERS['u3'],
                      u2=PARAMETERS['u2'],
                      u1=PARAMETERS['u1']
@@ -49,7 +49,7 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = l2_combo_loss(output, label, depth)
+                loss = l2_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
@@ -73,7 +73,7 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = l2_combo_loss(output, label, depth)
+                loss = l2_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
