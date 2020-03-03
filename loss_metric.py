@@ -46,7 +46,7 @@ Metric
 def IoU_metric(x, y ,smooth = 1.):
     y = y.reshape(x.shape)
     x = torch.sigmoid(x)
-    y = torch.tensor((y > 0.5).float())
+    y = torch.tensor((y > 0.3).float())
     intersection = (x * y).sum(dim=2).sum(dim=2)
     x_sum = x.sum(dim=2).sum(dim=2)
     y_sum = y.sum(dim=2).sum(dim=2)

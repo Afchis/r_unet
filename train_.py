@@ -1,12 +1,15 @@
 import torch
+import torch.nn as nn
+from torch.utils.tensorboard import SummaryWriter
 
 from args import *
-from model_head_small import *
-from dataloader_COCO2014_person import *
+from model_head import *
+from dataloader_COCO2017 import *
 from loss_metric import *
 
 
 if __name__ == '__main__':
+    print('NUM_EPOCHS: ', NUM_EPOCHS)
     print('TIMESTEPS: ', TIMESTEPS)
     print('BATCH_SIZE: ', BATCH_SIZE)
     print('INPUT_SIZE: ', INPUT_SIZE)
@@ -14,13 +17,14 @@ if __name__ == '__main__':
     print('NUM_CLASSES: ', NUM_CLASSES)
     print('LEARNING_RATE: ', LEARNING_RATE)
 
+writer = SummaryWriter()
 
 model = UNetDesigner(d1=PARAMETERS['d1'],
                      d2=PARAMETERS['d2'],
                      d3=PARAMETERS['d3'],
-                     # d4=PARAMETERS['d4'],
+                     d4=PARAMETERS['d4'],
                      b_=PARAMETERS['b_'],
-                     # u4=PARAMETERS['u4'],
+                     u4=PARAMETERS['u4'],
                      u3=PARAMETERS['u3'],
                      u2=PARAMETERS['u2'],
                      u1=PARAMETERS['u1']
@@ -33,9 +37,10 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 Train
 '''
 iter = 0
+val_iter = 0
 val_metric = []
 print('-'*30)
-for epoch in range(10):# NUM_EPOCHS = 125
+for epoch in range(NUM_EPOCHS):
     print('*'*10, 'epoch: ', epoch, '*'*10)
     for phase in ['train', 'valid']:
         if phase == 'train':
@@ -49,7 +54,7 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = l2_loss(output, label, depth)
+                loss = dice_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
@@ -57,8 +62,10 @@ for epoch in range(10):# NUM_EPOCHS = 125
                 optimizer.step()
                 optimizer.zero_grad()
 
-                if iter % 20 == 0:
+                if iter % 2 == 0:
                     print('loss_iter', iter, ':', loss.item())
+                    writer.add_scalar('train_loss', loss.item(), iter)
+                    writer.add_scalar('train_metric', metric.item(), iter)
 
             train_mean_loss = sum(loss_list) / len(loss_list)
             train_mean_metric = sum(metric_list) / len(metric_list)
@@ -68,22 +75,30 @@ for epoch in range(10):# NUM_EPOCHS = 125
             metric_list = []
             model.eval()
             for i, data in enumerate(data_loaders[phase]):
+                val_iter += 1
                 input, label, depth = data
                 input = input.to(device)
                 label = label.to(device)
                 depth = depth.to(device)
                 output = model(input)
-                loss = l2_loss(output, label, depth)
+                loss = dice_combo_loss(output, label, depth)
                 metric = IoU_metric(output, label)
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
+
+                if val_iter % 2 == 0:
+                    print('loss_iter', val_iter, ':', loss.item())
+                    writer.add_scalar('train_loss', loss.item(), val_iter)
+                    writer.add_scalar('train_metric', metric.item(), val_iter)
 
             valid_mean_loss = sum(loss_list) / len(loss_list)
             valid_mean_metric = sum(metric_list) / len(metric_list)
             print("valid mean_metric: ", valid_mean_metric)
             val_metric.append(valid_mean_metric)
 print('Maximum Valid metric: ', max(val_metric))
+print('Tensorboard name: ', GRAPH_NAME)
+writer.close()
 
 # !tensorboard --logdir=runs
 
-#torch.save(model.state_dict(), 'weights/weights.pth')
+torch.save(model.state_dict(), 'weights/weights_coco17.pth')

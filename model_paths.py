@@ -87,6 +87,7 @@ class ConvRnnRelu(nn.Module):
         self.input_size = ConvRnn_input_size
         self.convrnnrelu = nn.Sequential(ConvRnn(self.in_channels, self.out_channels, 
                                                  self.input_size, self.cell_model),
+                                         nn.BatchNorm2d(self.out_channels),
                                          nn.ReLU()
                                          )
 
@@ -100,6 +101,7 @@ class ConvRelu(nn.Module):
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.convrelu = nn.Sequential(nn.Conv2d(self.in_channels, self.out_channels, kernel_size=3, padding=1),
+                                      nn.BatchNorm2d(self.out_channels),
                                       nn.ReLU()
                                       )
 

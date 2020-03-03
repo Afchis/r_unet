@@ -119,7 +119,7 @@ class UNetDesigner(nn.Module):
 
          ##### Final layer #####
         self.final = nn.Sequential(nn.Conv2d(self.ch_list[1], self.num_classes, kernel_size=1),
-                                   nn.Sigmoid()
+                                   # nn.Softmax()
                                    )                                                    # 32-->NUM_CLASSES
 
     def forward(self, x):
