@@ -58,10 +58,6 @@ class _BaseDataset(data.Dataset):
                 label_ = (x==i).float()
                 depth += torch.tensor(morph.distance_transform_edt(np.asarray(label_)))
                 label = torch.cat([label, label_.unsqueeze(0)], dim=0)
-
-        label_ = (x==255).float()
-        depth += torch.tensor(morph.distance_transform_edt(np.asarray(label_)))
-        label = torch.cat([label, label_.unsqueeze(0)], dim=0)
         return label, depth
 
     def _set_files(self):

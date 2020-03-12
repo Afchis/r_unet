@@ -122,14 +122,41 @@ class UNetDesigner(nn.Module):
                                    # nn.Softmax()
                                    )                                                    # 32-->NUM_CLASSES
 
+        self.o_cat_1_1 = UpAndCat()
+        self.o_conv_1_1 = nn.Sequential(ConvRelu(self.ch_list[1]+self.ch_list[1], 
+                                             self.ch_list[1]),
+                                    ConvRelu(self.ch_list[1], self.ch_list[1])
+                                    )
+
+        self.o_cat_1_2 = UpAndCat()
+        self.o_conv_1_2 = nn.Sequential(ConvRelu(self.ch_list[2]+self.ch_list[1], 
+                                             self.ch_list[1]),
+                                    ConvRelu(self.ch_list[1], self.ch_list[1])
+                                    )
+
+        self.o_cat_2_1 = UpAndCat()
+        self.o_conv_2_1 = nn.Sequential(ConvRelu(self.ch_list[2]+self.ch_list[2], 
+                                             self.ch_list[2]),
+                                    ConvRelu(self.ch_list[2], self.ch_list[2])
+                                    )
+
     def forward(self, x):
         x = x.reshape(-1, self.input_chennels, self.input_size, self.input_size)
 
         down1_feat = self.down1(x)
         pool1 = self.down1_pool(down1_feat)
 
+        o1_1 = self.o_cat_1_1(pool1, down1_feat)
+        o1_1 = self.o_conv_1_1(o1_1)
+
         down2_feat = self.down2(pool1)
         pool2 = self.down2_pool(down2_feat)
+
+        o2_1 = self.o_cat_2_1(pool2, down2_feat)
+        o2_1 = self.o_conv_2_1(o2_1)
+
+        o1_2 = self.o_cat_1_2(o2_1, o1_1)
+        o1_2 = self.o_conv_1_2(o1_2)
 
         down3_feat = self.down3(pool2)
         pool3 = self.down3_pool(down3_feat)
@@ -139,10 +166,10 @@ class UNetDesigner(nn.Module):
         up_feat3 = self.up_cat_3(bottom_feat, down3_feat)
         up_feat3 = self.up_conv_3(up_feat3)
         
-        up_feat2 = self.up_cat_2(up_feat3, down2_feat)
+        up_feat2 = self.up_cat_2(up_feat3, o2_1)
         up_feat2 = self.up_conv_2(up_feat2)
         
-        up_feat1 = self.up_cat_1(up_feat2, down1_feat)
+        up_feat1 = self.up_cat_1(up_feat2, o1_2)
         up_feat1 = self.up_conv_1(up_feat1)
         
         out = self.final(up_feat1)
@@ -160,6 +187,6 @@ class UNetDesigner(nn.Module):
 
 if __name__ == '__main__':
 	import torch
-	tensor = torch.rand([1, 1, 3, 256, 256])
+	tensor = torch.rand([1, 1, 3, 128, 128])
 	model = UNetDesigner('False', 'False', 'False', 'False', 'False', 'False', 'False')
 	model(tensor)

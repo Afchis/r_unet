@@ -31,7 +31,7 @@ def dice_loss(x, y, d, smooth = 1.):
     #print(dice_loss.mean().item())
     return dice_loss.mean()
 
-def dice_combo_loss(x, y, d, bce_weight=0.5):
+def dice_combo_loss(x, y, d, bce_weight=0.3):
     dice_combo_loss = bce_weight * bce_loss(x, y, d) + (1 - bce_weight) * dice_loss(x, y, d)
     return dice_combo_loss
 

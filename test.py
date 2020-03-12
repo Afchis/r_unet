@@ -1,6 +1,6 @@
 from args import *
 from model_head import *
-from dataloader_VOC import *
+from dataloader_COCO2017 import *
 
 import torch
 import torch.nn as nn
@@ -15,10 +15,12 @@ to_pil = transforms.ToPILImage()
 model = UNetDesigner(d1=PARAMETERS['d1'],
                      d2=PARAMETERS['d2'],
                      d3=PARAMETERS['d3'],
+                     d4=PARAMETERS['d4'],
                      b_=PARAMETERS['b_'],
-                     u1=PARAMETERS['u1'],
+                     u4=PARAMETERS['u4'],
+                     u3=PARAMETERS['u3'],
                      u2=PARAMETERS['u2'],
-                     u3=PARAMETERS['u3']
+                     u1=PARAMETERS['u1']
                      )
 model = model.to(device)
 
