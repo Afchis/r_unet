@@ -1,5 +1,5 @@
 weights
 runs
-data/test_output
+data
 __pycache__
 .ipynb_checkpoints
