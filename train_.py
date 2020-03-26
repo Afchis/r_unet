@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 
 from args import *
-from model_head_small import *
+from model_head import *
 from dataloader_COCO2014_person import *
 from loss_metric import *
 
@@ -22,18 +22,17 @@ writer = SummaryWriter()
 model = UNetDesigner(d1=PARAMETERS['d1'],
                      d2=PARAMETERS['d2'],
                      d3=PARAMETERS['d3'],
-                     # d4=PARAMETERS['d4'],
+                     d4=PARAMETERS['d4'],
                      b_=PARAMETERS['b_'],
-                     # u4=PARAMETERS['u4'],
+                     u4=PARAMETERS['u4'],
                      u3=PARAMETERS['u3'],
                      u2=PARAMETERS['u2'],
                      u1=PARAMETERS['u1']
                      )
 model = model.to(device)
-# model.load_state_dict(torch.load('weights/weights.pth'))
+model.load_state_dict(torch.load('weights/weights.pth'))
 
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
-criterion = torch.nn.BCEWithLogitsLoss()
 '''
 Train
 '''
@@ -67,8 +66,8 @@ for epoch in range(NUM_EPOCHS):
                     print('loss_iter', iter, ':', loss.item())
                     writer.add_scalar('train_loss', loss.item(), iter)
                     writer.add_scalar('train_metric', metric.item(), iter)
-                if iter % 100 == 0:
-                    torch.save(model.state_dict(), 'weights/weights_coco14.pth')
+                if iter % 1000 == 0:
+                    torch.save(model.state_dict(), 'weights/weights_coco17.pth')
                     print("save_checkpoint")
 
             train_mean_loss = sum(loss_list) / len(loss_list)
@@ -90,7 +89,7 @@ for epoch in range(NUM_EPOCHS):
                 loss_list.append(loss.item())
                 metric_list.append(metric.item())
 
-                if val_iter % 2 == 0:
+                if val_iter % 50 == 0:
                     print('loss_iter', val_iter, ':', loss.item())
                     writer.add_scalar('train_loss', loss.item(), val_iter)
                     writer.add_scalar('train_metric', metric.item(), val_iter)

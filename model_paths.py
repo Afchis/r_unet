@@ -127,3 +127,42 @@ class UpAndCat(nn.Module):
         out = self.up(x_up)
         out = torch.cat([out, x_cat], dim=1)
         return out
+
+class UpAndCat_2(nn.Module):    
+    def __init__(self):
+        super(UpAndCat_2, self).__init__()
+        self.up = nn.Upsample(scale_factor=2, mode='nearest')
+
+    def forward(self, x_up, x_cat_1, x_cat_2):
+        out = self.up(x_up)
+        out = torch.cat([out, x_cat_1, x_cat_2], dim=1)
+        return out
+
+class UpAndCat_3(nn.Module):    
+    def __init__(self):
+        super(UpAndCat_3, self).__init__()
+        self.up = nn.Upsample(scale_factor=2, mode='nearest')
+
+    def forward(self, x_up, x_cat_1, x_cat_2, x_cat_3):
+        out = self.up(x_up)
+        out = torch.cat([out, x_cat_1, x_cat_2, x_cat_3], dim=1)
+        return out
+
+class UpAndCat_4(nn.Module):    
+    def __init__(self):
+        super(UpAndCat_4, self).__init__()
+        self.up = nn.Upsample(scale_factor=2, mode='nearest')
+
+    def forward(self, x_up, x_cat_1, x_cat_2, x_cat_3, x_cat_4):
+        out = self.up(x_up)
+        out = torch.cat([out, x_cat_1, x_cat_2, x_cat_3, x_cat_4], dim=1)
+        return out
+
+
+class Cat(nn.Module):    
+    def __init__(self):
+        super(Cat, self).__init__()
+
+    def forward(self, x_up, x_cat):
+        out = torch.cat([x_up, x_cat], dim=1)
+        return out

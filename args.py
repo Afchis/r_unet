@@ -31,7 +31,7 @@ PARAMETERS = {
 # arguments
 TIMESTEPS = 1
 BATCH_SIZE = 8
-NUM_EPOCHS = 15
+NUM_EPOCHS = 150
 INPUT_SIZE = 256
 INPUT_CHANNELS = 3
 NUM_CLASSES = 2
@@ -44,22 +44,22 @@ device
 
 
 
-# for Small_UNet
-PARAMETERS = {
-    'd1' : 'False', 
-    'd2' : 'False', 
-    'd3' : 'False', 
-    'b_' : 'False', 
-    'u3' : 'False', 
-    'u2' : 'False', 
-    'u1' : 'False',
-}
+# # for Small_UNet
+# PARAMETERS = {
+#     'd1' : 'False', 
+#     'd2' : 'False', 
+#     'd3' : 'False', 
+#     'b_' : 'False', 
+#     'u3' : 'False', 
+#     'u2' : 'False', 
+#     'u1' : 'False',
+# }
 
-# arguments
-TIMESTEPS = 1
-BATCH_SIZE = 16
-NUM_EPOCHS = 1
-INPUT_SIZE = 128
-INPUT_CHANNELS = 3
-NUM_CLASSES = 2
-LEARNING_RATE = 0.001
+# # arguments
+# TIMESTEPS = 1
+# BATCH_SIZE = 16
+# NUM_EPOCHS = 50
+# INPUT_SIZE = 128
+# INPUT_CHANNELS = 3
+# NUM_CLASSES = 2
+# LEARNING_RATE = 0.001
